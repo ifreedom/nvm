@@ -11,9 +11,10 @@ if [ ! -d "$NVM_DIR" ]; then
 fi
 
 # Emulate curl with wget, if necessary
-if [ ! `which curl` ]; then
+which curl 1>/dev/null
+if [ $? != 0 ]; then
   NOCURL='nocurl'
-  curl() { echo 'Need curl to proceed.' >&2; }
+  echo 'Need curl to proceed.' >&2
 fi
 
 # Expand a version using the version cache
