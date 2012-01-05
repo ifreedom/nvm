@@ -96,12 +96,20 @@ nvm()
       elif [ "`curl -Is "http://nodejs.org/dist/node-$VERSION.tar.gz" | grep '200 OK'`" != '' ]; then
         tarball="http://nodejs.org/dist/node-$VERSION.tar.gz"
       fi
+
+	  if (
+        [ ! -d "$NVM_DIR/src/node-$VERSION" ] && \
+		[ ! -z $tarball ]
+		)
+	  then
+        mkdir -p "$NVM_DIR/src"
+        cd "$NVM_DIR/src"
+        curl -C - --progress-bar $tarball -o "node-$VERSION.tar.gz" || return
+        tar -xzf "node-$VERSION.tar.gz"
+	  fi
+
       if (
-        [ ! -z $tarball ] && \
-        mkdir -p "$NVM_DIR/src" && \
-        cd "$NVM_DIR/src" && \
-        curl -C - --progress-bar $tarball -o "node-$VERSION.tar.gz" && \
-        tar -xzf "node-$VERSION.tar.gz" && \
+        [ -d "$NVM_DIR/src/node-$VERSION" ] && \
         cd "node-$VERSION" && \
         ./configure --prefix="$NVM_DIR/$VERSION" && \
         make && \
