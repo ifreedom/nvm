@@ -84,11 +84,8 @@ nvm()
       echo
     ;;
     "install" )
-      if [ $# -ne 2 ]; then
-        nvm help
-        return
-      fi
-      [ "$NOCURL" ] && curl && return
+      [ $# -ne 2 ] && nvm help && return
+      [ "$NOCURL" ] && echo 'Need curl to proceed.' >&2 && return
       VERSION=`nvm_version $2`
 
       [ -d "$NVM_DIR/$VERSION" ] && echo "$VERSION is already installed." && return
