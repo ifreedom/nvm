@@ -179,10 +179,7 @@ nvm()
       fi
     ;;
     "use" )
-      if [ $# -ne 2 ]; then
-        nvm help
-        return
-      fi
+      [ $# -ne 2 ] && nvm help && return
       VERSION=`nvm_version $2`
       if [ ! -d $NVM_DIR/$VERSION ]; then
         echo "$VERSION version is not installed yet"
@@ -207,10 +204,7 @@ nvm()
     ;;
     "run" )
       # run given version of node
-      if [ $# -lt 2 ]; then
-        nvm help
-        return
-      fi
+      [ $# -ne 2 ] && nvm help && return
       VERSION=`nvm_version $2`
       if [ ! -d $NVM_DIR/$VERSION ]; then
         echo "$VERSION version is not installed yet"
@@ -267,14 +261,11 @@ nvm()
       echo "Deleted alias $2"
     ;;
     "copy-packages" )
-        if [ $# -ne 2 ]; then
-          nvm help
-          return
-        fi
-        VERSION=`nvm_version $2`
-        ROOT=`nvm use $VERSION && npm -g root`
-        INSTALLS=`nvm use $VERSION > /dev/null && npm -g -p ll | grep "$ROOT\/[^/]\+$" | cut -d '/' -f 8 | cut -d ":" -f 2 | grep -v npm | tr "\n" " "`
-        npm install -g $INSTALLS
+      [ $# -ne 2 ] && nvm help && return
+      VERSION=`nvm_version $2`
+      ROOT=`nvm use $VERSION && npm -g root`
+      INSTALLS=`nvm use $VERSION > /dev/null && npm -g -p ll | grep "$ROOT\/[^/]\+$" | cut -d '/' -f 8 | cut -d ":" -f 2 | grep -v npm | tr "\n" " "`
+      npm install -g $INSTALLS
     ;;
     "clear-cache" )
         rm -f $NVM_DIR/v* 2>/dev/null
